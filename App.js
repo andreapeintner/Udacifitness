@@ -1,18 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { Text, StyleSheet, View, TouchableHighlight, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import AddEntry from './components/AddEntry'
 
 export default class App extends React.Component {
-  componentDidMount() {
-    console.log('Before')
-    debugger
-    console.log('After')
+  handlePress = () => {
+    alert('Hello')
   }
   render() {
     return (
       <View style={styles.container}>
-        <Text>Opening up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
+        <TouchableHighlight style={styles.btn} onPress={this.handlePress} underlayColor='#d4271b'>
+          <Text>Touchable Highlight</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -25,4 +24,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  btn: {
+    backgroundColor: '#E53224',
+    padding: 10,
+    paddingLeft: 50,
+    paddingRight: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  btnText: {
+    color: '#fff',
+  }
 });
