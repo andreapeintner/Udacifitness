@@ -1,17 +1,18 @@
 import React from 'react'
-import { Text, StyleSheet, View, TouchableHighlight, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { Text, StyleSheet, View } from 'react-native'
 import AddEntry from './components/AddEntry'
 
 export default class App extends React.Component {
+  state = {
+    value: 0,
+  }
   handlePress = () => {
     alert('Hello')
   }
   render() {
     return (
       <View style={styles.container}>
-        <TouchableHighlight style={styles.btn} onPress={this.handlePress} underlayColor='#d4271b'>
-          <Text>Touchable Highlight</Text>
-        </TouchableHighlight>
+        <AddEntry />
       </View>
     );
   }
@@ -20,8 +21,10 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginLeft: 10,
+    marginRight: 10,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
   btn: {

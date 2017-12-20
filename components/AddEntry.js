@@ -1,9 +1,21 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
-import { getMetricMetaInfo } from '../utils/helpers'
+import { View, Text, TouchableHighlight } from 'react-native'
+import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciStepper from './UdaciStepper'
 import DateHeader from './DateHeader'
+import TextButton from './TextButton'
+import { Ionicons } from '@expo/vector-icons'
+import { submitEntry, removeEntry } from '../utils/api'
+
+
+function SubmitButton ({ onPress }) {
+    return (
+        <TouchableHighlight onPress={onPress}>
+            <Text>SUBMIT</Text>
+        </TouchableHighlight>
+    )
+}
 
 export default class AddEntry extends Component {
     state = {
@@ -13,6 +25,7 @@ export default class AddEntry extends Component {
         sleep: 0,
         eat: 0,
     }
+
     increment = (metric) => {
         const { max, step } = getMetricMetaInfo(metric)
         this.setState((state) => {
@@ -37,8 +50,45 @@ export default class AddEntry extends Component {
             [metric]: value,
         }))
     }
+
+    submit = () => {
+        const key = timeToString()
+        const entry = this.state
+
+        this.setState(() => ({
+            run: 0,
+            bike: 0,
+            swim: 0,
+            sleep: 0,
+            eat: 0,
+        }))
+        submitEntry({ key, entry })
+
+
+
+    }
+    reset = () => {
+        const key = timeToString()
+
+        removeEntry(key)
+
+    }
     render() {
         const metaInfo = getMetricMetaInfo()
+            if (this.props.alredyLogged) {
+                return (
+                    <View>
+                        <Ionicons 
+                            name='ios-happy-outline'
+                            size={100}
+                        />
+                        <Text>You already logged your infos today</Text>
+                        <TextButton onPress={this.reset}>
+                            Reset
+                        </TextButton>
+                    </View>
+                )
+            }
 
         return (
             <View>
@@ -50,12 +100,12 @@ export default class AddEntry extends Component {
                         <View key={key}>
                             {getIcon()}
                             {type === 'slider' 
-                            ? <UdaciSlider 
+                            ? <UdaciSlider
                                 value={value}
                                 onChange={(value) => this.slide(key, value)}
                                 {...rest}
                             /> 
-                            : <UdaciStepper 
+                            : <UdaciStepper
                                 value={value}
                                 onIncrement={() => this.increment(key)}
                                 onDecrement={() => this.decrement(key)}
@@ -65,6 +115,7 @@ export default class AddEntry extends Component {
                         </View>
                     )
                 })}
+                <SubmitButton onPress={this.submit}/>
             </View>
         )
     }
