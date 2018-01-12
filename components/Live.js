@@ -20,10 +20,10 @@ export default class Live extends Component {
                 </View>
             )
         }
-        if (status === undeterminded) {
+        if (status === undetermined) {
             return (
                 <View>
-                    <Text>undeterminded</Text>
+                    <Text>undetermined</Text>
                 </View>
             )
         }
