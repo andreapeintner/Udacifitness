@@ -8,6 +8,7 @@ import { removeEntry } from '../utils/api'
 import { timeToString, getDailyReminderValue } from '../utils/helpers'
 import TextButton from './TextButton'
 
+
 class EntryDetail extends React.Component {
     static navigationOptions = ({ navigation }) => {
         const { entryId } = navigation.state.params
@@ -21,13 +22,20 @@ class EntryDetail extends React.Component {
     }
     reset = () => {
         const { remove, goBack, entryId } = this.props
+
+        remove()
+        goBack()
+        removeEntry(entryId)
+    }
+    shouldComponentUpdate (nextProps) {
+        return nextProps.metrics !== null && !nextProps.metrics.today
     }
     render () {
         const { metrics } = this.props
         return (
             <View>
                 <MetricCard metrics={metrics} />
-                <TextButton onPress={this.reset} style={{margin: 20}} />
+                <TextButton style={{margin: 20}} onPress={this.reset}>RESET</TextButton>
             </View>
         )
     }
@@ -60,4 +68,4 @@ function mapDispatchToProps (dispatch, { navigation }) {
     }
 }
 
-export default connect(mapStateToProps)(EntryDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EntryDetail)
